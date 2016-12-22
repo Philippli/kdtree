@@ -1,24 +1,45 @@
-GXX=/usr/bin/g++
+GXX=/usr/local/bin/g++-4.8
+#GXX=/usr/bin/g++
 
 SRC=src
 BUILD=build
 BIN=bin
-INC=-I include
+CPPFLAGS=-O0 -g
+INC=-I include/$(CORE_DIR)
 
-OBJS=$(BUILD)/test.m.o $(BUILD)/kdtree.o
-TARGET=$(BIN)/a.out
+CORE_DIR=core
+BUILD_KDTREE_DIR=build_kdtree
+QUERY_KDTREE_DIR=query_kdtree
 
-all: $(TARGET)
+BUILD_KDTREE=$(BIN)/build_kdtree.out
+QUERY_KDTREE=$(BIN)/query_kdtree.out
 
-$(TARGET): $(OBJS)
-	$(GXX) -o $@ $^
+CORE_OBJS=
+BUILD_KDTREE_OBJS=$(BUILD)/$(BUILD_KDTREE_DIR)/build_kdtree.o
+QUERY_KDTREE_OBJS=$(BUILD)/$(QUERY_KDTREE_DIR)/query_kdtree.o
 
-$(BUILD)/%.o: $(SRC)/%.cpp
-	mkdir -p $(BUILD)
-	$(GXX) $(INC) -o $@ -c $<
+all: $(BUILD_KDTREE) $(QUERY_KDTREE)
+
+$(BUILD_KDTREE): $(CORE_OBJS) $(BUILD_KDTREE_OBJS)
+	$(GXX) $(CPPFLAGS) -o $@ $^
+
+$(QUERY_KDTREE): $(CORE_OBJS) $(QUERY_KDTREE_OBJS)
+	$(GXX) $(CPPFLAGS) -o $@ $^
+
+$(BUILD)/$(CORE_DIR)/%.o: $(SRC)/$(CORE_DIR)/%.cpp
+	mkdir -p $(BUILD)/$(CORE_DIR)
+	$(GXX) $(CPPFLAGS) $(INC) -o $@ -c $<
+
+$(BUILD)/$(BUILD_KDTREE_DIR)/%.o: $(SRC)/$(BUILD_KDTREE_DIR)/%.cpp
+	mkdir -p $(BUILD)/$(BUILD_KDTREE_DIR)
+	$(GXX) $(CPPFLAGS) $(INC) -o $@ -c $<
+
+$(BUILD)/$(QUERY_KDTREE_DIR)/%.o: $(SRC)/$(QUERY_KDTREE_DIR)/%.cpp
+	mkdir -p $(BUILD)/$(QUERY_KDTREE_DIR)
+	$(GXX) $(CPPFLAGS) $(INC) -o $@ -c $<
 
 clean:
-	rm -f $(OBJS)
-	rm -f $(TARGET)
+	rm -rf $(BUILD)/*
+	rm -f $(BIN)/*
 
 .PHONY: clean
