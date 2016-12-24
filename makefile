@@ -4,7 +4,7 @@ GXX=/usr/local/bin/g++-4.8
 SRC=src
 BUILD=build
 BIN=bin
-CPPFLAGS=-O0 -g
+CPPFLAGS=--std=c++11 -g
 INC=-I include/$(CORE_DIR)
 
 CORE_DIR=core
