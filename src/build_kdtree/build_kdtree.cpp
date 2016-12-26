@@ -1,37 +1,51 @@
-#include "kdtree.h"
+#include "kdtree_static.h"
 
 #include <iostream>
+#include <string>
 #include <fstream>
+#include <sstream>
+#include <algorithm>
 
 using namespace std;
 using namespace kdtree;
 
-int main () {
-    typedef Point<3, double> MyPoint;
+int main (int argc, char** argv) {
 
-    double a[] = { 1, 2, 3, 4, 5, 6};
-    vector<double> vct1(a, a + 3);
-    vector<double> vct2(a + 1, a + 4);
-    vector<double> vct3(a + 2, a + 5);
+    // build tree from csv file
+    if (argc < 3) {
+        cout << "please provide <points_csv_file> <tree_save_file>\n"
+             << endl;
+        return 1;
+    }
 
-    MyPoint* p1 = MyPoint::createPoint(vct1);
-    MyPoint* p2 = MyPoint::createPoint(vct2);
-    MyPoint* p3 = MyPoint::createPoint(vct3);
+    // TODO remove hard code
+    const size_t N = 3;
+    typedef Point<N, double> MyPoint;
 
-    KDTree<MyPoint> mytree;
-    mytree.insert(*p1);
-    mytree.insert(*p2);
-    mytree.insert(*p3);
+    // read file and create KDTreeNode line by line
+    vector<KDTreeNode<MyPoint>* > nodeVct;  
+    ifstream infile(argv[1]);
+    string line;
+    while (getline(infile, line)) {
+        static MyPoint tmp;
+        istringstream ss(line);
+        string numstr;
+        for (size_t i = 0; i < N; ++i) {
+            if(!getline(ss, numstr, ',')) {
+                // skip corrupted line
+                break;
+            }
+            stringstream numss(numstr);
+            numss >> tmp.m_data[i]; 
+        }
+        nodeVct.emplace_back(new KDTreeNode<MyPoint>(tmp));
+    }
 
-    mytree.print();
 
-    KDTree<MyPoint> mytree2(buildTree<MyPoint>("data/test"));
-    mytree2.print();
-    
+    // create a StaticKDTree instance
+    StaticKDTree<MyPoint> myTree(nodeVct);
 
-    delete p1;
-    delete p2;
-    delete p3;
-
+    // save tree to file
+    myTree.saveTree(argv[2]);
     return 0;
 }
