@@ -25,7 +25,7 @@ int main (int argc, char** argv) {
     typedef Point<N, double> MyPoint;
 
     // read original points file and create point-index map
-    unordered_map<string, int> pointIdxMap;  
+    unordered_map<string, int> pointIdxMap;
     ifstream originPointFile(argv[1]);
     string line;
     int pointIdx = 0;
@@ -39,7 +39,7 @@ int main (int argc, char** argv) {
                 break;
             }
             stringstream numss(numstr);
-            numss >> tmp.m_data[i]; 
+            numss >> tmp.m_data[i];
         }
         pointIdxMap[tmp.toString()] = pointIdx++;
     }
@@ -60,7 +60,7 @@ int main (int argc, char** argv) {
                 break;
             }
             stringstream numss(numstr);
-            numss >> tmp.m_data[i]; 
+            numss >> tmp.m_data[i];
         }
         KDTreeNode<MyPoint>* res = myTree.nearest(tmp);
         outfile << pointIdxMap[res->m_point.toString()]

@@ -27,29 +27,27 @@ struct Point{
 
         Point(const Point<N, T>& p) : m_data(p.m_data) { }
 
+        /*
+         * construct a point from a string of space seperated values.
+         */
         Point(const string& line) {
             // TODO handle bad line
-            istringstream ss(line);
             m_data.resize(N);
+            istringstream ss(line);
             for (size_t i = 0; i < N; ++i) {
                 ss >> m_data[i];
             }
         }
 
+        /*
+         * create a string with each value sperated by space.
+         */
         string toString() const {
             stringstream ss;
             for (size_t i = 0; i < N; ++i) {
                 ss << m_data[i] << " ";
             }
             return ss.str();
-        }
-
-        static Point<N, T>* createPoint(const vector<T>& data) {
-            if (data.size() != N) {
-                return NULL;
-            } else {
-                return new Point<N, T>(data);
-            }
         }
 
         size_t dimension() const { return N; }
@@ -93,6 +91,13 @@ struct KDTreeNode {
  * class KDTree
  *
  * T: point type
+ *
+ *
+ * This is an abstract class. It impletes basic constructors of a KDTree,
+ * save & load functions.
+ *
+ * All its derived classes are required to explicitly implement function
+ *      virtual KDTreeNode<T>* nearest(const T& point);
  */
 template<typename T>
 struct KDTree {
@@ -104,6 +109,9 @@ struct KDTree {
 
         KDTree(KDTreeNode<T>* root) : m_root(root) { }
 
+        /*
+         * create an instance from saved tree.
+         */
         KDTree(const string& filename) {
             m_root = loadTree(filename);
         }
@@ -111,27 +119,21 @@ struct KDTree {
         virtual ~KDTree() { destroy(m_root); }
 
     public:
-        virtual KDTreeNode<T>* nearest(const T& point) = 0;
+
+        /*
+         * return nearest node from test point.
+         */
+        virtual KDTreeNode<T>* nearest(const T& point) const = 0;
 
     public:
         bool empty() const {
             return NULL == m_root;
         }
 
-        void print() const {
-            print(m_root);
+        const KDTreeNode<T>* root() const {
+            return m_root;
         }
 
-        void print(const KDTreeNode<T>* root) const {
-            if (root != NULL) {
-                for (auto e: root->m_point.m_data) {
-                    cout << e << ", ";
-                }
-                cout << endl;
-                print(root->m_left);
-                print(root->m_right);
-            }
-        }
     public:
         /*
          * save this KDTree into a file
@@ -191,6 +193,29 @@ struct KDTree {
         }
 };
 
+template <typename T>
+void printTree(const KDTreeNode<T>* root) {
+    if (root != NULL) {
+        for (auto e: root->m_point.m_data) {
+            cout << e << ", ";
+        }
+        cout << endl;
+        print(root->m_left);
+        print(root->m_right);
+    }
+}
+
+template <typename T>
+bool equalTree(const KDTreeNode<T>* root1, const KDTreeNode<T>* root2) {
+    if (root1 == NULL || root2 == NULL) {
+        return root1 == root2;
+    }
+
+    return root1->m_point.equals(root2->m_point)
+            && equalTree(root1->m_left, root2->m_left)
+            && equalTree(root1->m_right, root2->m_right)
+            ;
+}
 
 } // close namespace kdtree
 #endif

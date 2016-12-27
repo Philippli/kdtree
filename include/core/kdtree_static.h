@@ -25,11 +25,11 @@ class StaticKDTree : public KDTree<T> {
             this->m_root = NULL;
             buildTree(this->m_root, nodes, 0, nodes.size() - 1, 0);
         }
-       
+
         /*
-         * return nearest KDTreeNode from input point 
-         */ 
-        virtual KDTreeNode<T>* nearest(const T& point) {
+         * return nearest KDTreeNode from input point
+         */
+        virtual KDTreeNode<T>* nearest(const T& point) const {
             if (this->m_root == NULL) {
                 return this->m_root;
             }
@@ -53,7 +53,7 @@ class StaticKDTree : public KDTree<T> {
                 || left >= nodes.size()
                 || right >= nodes.size()
                 ) {
-                return; 
+                return;
             }
 
             const int mid = selectMedian( nodes, left ,right,
@@ -61,7 +61,7 @@ class StaticKDTree : public KDTree<T> {
             root = nodes[mid];
             buildTree(root->m_left, nodes, left, mid - 1, depth + 1);
             buildTree(root->m_right, nodes, mid + 1, right, depth + 1);
-        } 
+        }
 
         /*
          * this function sorts nodes range based on dimension,
@@ -102,14 +102,15 @@ class StaticKDTree : public KDTree<T> {
                         swap(nodes[j], nodes[i]);
                     }
                     ++j;
-                } 
+                }
             }
             swap(nodes[j], nodes[right]);
             return j;
         }
 
         void nearest(const T& point, KDTreeNode<T>* node,
-                    KDTreeNode<T>*& nearestNode, const size_t idx) {
+                    KDTreeNode<T>*& nearestNode, const size_t idx
+                    ) const {
             if (node == NULL) {
                 return;
             }

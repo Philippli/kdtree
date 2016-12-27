@@ -23,7 +23,7 @@ int main (int argc, char** argv) {
     typedef Point<N, double> MyPoint;
 
     // read file and create KDTreeNode line by line
-    vector<KDTreeNode<MyPoint>* > nodeVct;  
+    vector<KDTreeNode<MyPoint>* > nodeVct;
     ifstream infile(argv[1]);
     string line;
     while (getline(infile, line)) {
@@ -36,7 +36,7 @@ int main (int argc, char** argv) {
                 break;
             }
             stringstream numss(numstr);
-            numss >> tmp.m_data[i]; 
+            numss >> tmp.m_data[i];
         }
         nodeVct.emplace_back(new KDTreeNode<MyPoint>(tmp));
     }
