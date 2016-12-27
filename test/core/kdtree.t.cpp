@@ -14,7 +14,7 @@ template <typename T>
 class PhonyKDTree : public KDTree<T> {
     public:
         PhonyKDTree(KDTreeNode<T>* root) : KDTree<T>(root) { }
-        
+
         PhonyKDTree(const std::string& filename) : KDTree<T>(filename) { }
 
         // PHONY
@@ -95,7 +95,7 @@ void TEST_saveTree() {
     std::stringstream loadSs;
     loadSs << loadIfs.rdbuf();
     const std::string str1 = loadSs.str();
-    
+
     std::ifstream savIfs(savFilename);
     std::stringstream savSs;
     savSs << savIfs.rdbuf();
