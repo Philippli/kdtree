@@ -9,6 +9,12 @@
 
 using namespace std;
 
+inline void trimString(std::string& str)
+{
+    str.erase(0, str.find_first_not_of(' '));
+    str.erase(str.find_last_not_of(' ') + 1);
+}
+
 namespace kdtree {
 
 /*
@@ -141,13 +147,13 @@ struct KDTree {
          * a null node is an empty ine
          * nodes are stored as in-order
          */
-        void saveTree(const string& filename) {
+        void saveTree(const string& filename) const {
             ofstream ofile(filename);
             saveTree(m_root, ofile);
         }
 
     private:
-        void saveTree(KDTreeNode<T>* node, ofstream& ofile) {
+        void saveTree(KDTreeNode<T>* node, ofstream& ofile) const {
             if (node == NULL) {
                 ofile << "\n";
             } else {
@@ -173,6 +179,7 @@ struct KDTree {
         void loadTree(KDTreeNode<T>*& node, ifstream& infile) {
             string line;
             if (getline(infile, line)) {
+                trimString(line);
                 if (line.empty()) {
                     node = NULL;
                     return;
