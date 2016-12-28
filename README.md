@@ -36,7 +36,7 @@ This command will run 3 test binaries generated in **Build**
 $ g++ --version
 g++ (Ubuntu 4.8.4-2ubuntu1~14.04) 4.8.4
 
-$ cat  /etc/os-release                                        
+$ cat  /etc/os-release
 NAME="Ubuntu"
 VERSION="14.04.3 LTS, Trusty Tahr"
 ID=ubuntu
