@@ -28,7 +28,7 @@ This command will build a kdtree and save it into file *sample_data_kdtree.sav*
 This command will load *sample_data_kdtree.sav* into memory and query test points. Output will be saved in *query_output*
 
 3. tests  
-``` ./run_tests ```  
+``` ./run_tests.bash ```  
 This command will run 3 test binaries generated in **Build**
 
 # Dev/Test Environment
