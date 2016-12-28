@@ -33,12 +33,15 @@ TEST_OBJS=\
 all: $(BUILD_KDTREE) $(QUERY_KDTREE) $(TESTS)
 
 $(BUILD_KDTREE): $(CORE_OBJS) $(BUILD_KDTREE_OBJS)
+	mkdir -p $(BIN)
 	$(GXX) $(CPPFLAGS) -o $@ $^
 
 $(QUERY_KDTREE): $(CORE_OBJS) $(QUERY_KDTREE_OBJS)
+	mkdir -p $(BIN)
 	$(GXX) $(CPPFLAGS) -o $@ $^
 
 $(BIN)/%.t.out: $(CORE_OBJS) $(BUILD)/$(TEST)/%.t.o
+	mkdir -p $(BIN)
 	$(GXX) $(CPPFLAGS) -o $@ $^
 
 $(BUILD)/$(BUILD_KDTREE_DIR)/%.o: $(SRC)/$(BUILD_KDTREE_DIR)/%.cpp
