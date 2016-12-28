@@ -1,5 +1,5 @@
-GXX=/usr/local/bin/g++-4.8
-#GXX=/usr/bin/g++
+#GXX=/usr/local/bin/g++-4.8
+GXX=/usr/bin/g++
 CPPFLAGS=--std=c++11 -g
 
 SRC=src
