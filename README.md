@@ -3,7 +3,7 @@ Dec 28, 2016
 pei.li.philip@gmail.com  
 
 # Build  
-```make all```
+``` make all ```
 
 This command will generate following binaries under ```bin/```  
 ```
@@ -27,8 +27,12 @@ This command will build a kdtree and save it into file *sample_data_kdtree.sav*
 ``` ./bin/query_kdtree.out data/sample_data.csv sample_data_kdtree.sav data/query_data.csv query_output ```  
 This command will load *sample_data_kdtree.sav* into memory and query test points. Output will be saved in *query_output*
 
-3. tests  
-``` ./run_tests.bash ```  
+3. build & query  
+``` ./build_query.sh ```  
+This command executes above 2 commands and generate file  *query_output*
+
+4. tests  
+``` ./run_tests.sh ```  
 This command will run 3 test binaries generated in **Build**
 
 # Dev/Test Environment
